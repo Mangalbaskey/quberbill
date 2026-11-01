@@ -1,0 +1,3 @@
+# Frappe is not listed here because it is always present as the framework.
+# ERPNext and india_compliance are installed as separate Frappe apps.
+# Only list true Python package dependencies below.

@@ -1,0 +1,8 @@
+include bharat_business/templates/*.html
+recursive-include bharat_business/public *
+recursive-include bharat_business/templates *
+recursive-include bharat_business *.json
+recursive-include bharat_business *.js
+recursive-include bharat_business *.css
+recursive-include bharat_business *.html
+recursive-include bharat_business *.py

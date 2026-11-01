@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Frappe bench artefacts (never commit these)
+*.pyc
+node_modules/
+.yarn/
+.parcel-cache/
+
+# Environment
+.env
+*.env.local
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Test
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# Frappe site data (must never be committed)
+sites/*/site_config.json
+sites/*/private/
+sites/*/public/files/

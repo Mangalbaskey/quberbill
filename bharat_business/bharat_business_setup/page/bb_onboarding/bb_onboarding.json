@@ -1,0 +1,18 @@
+{
+ "creation": "2026-11-01 00:00:00.000000",
+ "doctype": "Page",
+ "icon": "fa fa-magic",
+ "modified": "2026-11-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Bharat Business Setup",
+ "name": "bb_onboarding",
+ "owner": "Administrator",
+ "page_name": "bb_onboarding",
+ "restrict_to_domain": "",
+ "roles": [
+  {"role": "Bharat Business Owner"},
+  {"role": "System Manager"}
+ ],
+ "system_page": 0,
+ "title": "Setup Your Business"
+}

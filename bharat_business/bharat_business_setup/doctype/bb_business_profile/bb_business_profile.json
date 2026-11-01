@@ -1,0 +1,230 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:profile_name",
+ "creation": "2026-11-01 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "profile_name",
+  "company",
+  "business_type",
+  "column_break_1",
+  "is_active",
+  "onboarding_complete",
+  "section_gst",
+  "gst_category",
+  "gstin",
+  "place_of_supply_state",
+  "column_break_gst",
+  "enable_e_invoice",
+  "enable_e_way_bill",
+  "annual_turnover_cr",
+  "section_operations",
+  "enable_inventory",
+  "number_of_branches",
+  "number_of_employees",
+  "column_break_ops",
+  "enable_purchase",
+  "enable_manufacturing",
+  "enable_pos",
+  "section_timestamps",
+  "created_by",
+  "modified_by"
+ ],
+ "fields": [
+  {
+   "fieldname": "profile_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Profile Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "business_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Business Type",
+   "options": "\nretail\ngrocery\nwholesale\nrestaurant\nservice_repair\nfreelancer_agency\nmanufacturing",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active",
+   "default": "1"
+  },
+  {
+   "fieldname": "onboarding_complete",
+   "fieldtype": "Check",
+   "label": "Onboarding Complete",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_gst",
+   "fieldtype": "Section Break",
+   "label": "GST Information"
+  },
+  {
+   "fieldname": "gst_category",
+   "fieldtype": "Select",
+   "label": "GST Registration Category",
+   "options": "Unregistered\nRegistered Regular\nRegistered Composition\nSEZ\nOverseas",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gstin",
+   "fieldtype": "Data",
+   "label": "GSTIN",
+   "description": "15-character GST Identification Number"
+  },
+  {
+   "fieldname": "place_of_supply_state",
+   "fieldtype": "Link",
+   "label": "State (Place of Supply)",
+   "options": "State"
+  },
+  {
+   "fieldname": "column_break_gst",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "enable_e_invoice",
+   "fieldtype": "Check",
+   "label": "Enable E-Invoice",
+   "description": "Required for businesses with annual turnover > ₹5 crore"
+  },
+  {
+   "fieldname": "enable_e_way_bill",
+   "fieldtype": "Check",
+   "label": "Enable E-Way Bill"
+  },
+  {
+   "fieldname": "annual_turnover_cr",
+   "fieldtype": "Float",
+   "label": "Estimated Annual Turnover (₹ Crore)",
+   "description": "Used to determine e-invoice and audit requirements"
+  },
+  {
+   "fieldname": "section_operations",
+   "fieldtype": "Section Break",
+   "label": "Operations"
+  },
+  {
+   "fieldname": "enable_inventory",
+   "fieldtype": "Check",
+   "label": "Track Inventory / Stock",
+   "default": "1"
+  },
+  {
+   "fieldname": "number_of_branches",
+   "fieldtype": "Int",
+   "label": "Number of Branches / Locations",
+   "default": "1"
+  },
+  {
+   "fieldname": "number_of_employees",
+   "fieldtype": "Int",
+   "label": "Number of Employees",
+   "default": "1"
+  },
+  {
+   "fieldname": "column_break_ops",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "enable_purchase",
+   "fieldtype": "Check",
+   "label": "Track Purchases",
+   "default": "1"
+  },
+  {
+   "fieldname": "enable_manufacturing",
+   "fieldtype": "Check",
+   "label": "Enable Manufacturing",
+   "depends_on": "eval:doc.business_type == 'manufacturing'"
+  },
+  {
+   "fieldname": "enable_pos",
+   "fieldtype": "Check",
+   "label": "Enable Counter / POS Billing",
+   "depends_on": "eval:['retail','grocery','restaurant'].includes(doc.business_type)"
+  },
+  {
+   "fieldname": "section_timestamps",
+   "fieldtype": "Section Break",
+   "label": "Audit",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Created By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "modified_by",
+   "fieldtype": "Link",
+   "label": "Modified By",
+   "options": "User",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Bharat Business Setup",
+ "name": "BB Business Profile",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Bharat Business Owner",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Bharat Business Manager",
+   "share": 0,
+   "write": 0
+  },
+  {
+   "read": 1,
+   "role": "Bharat Business Viewer"
+  }
+ ],
+ "search_fields": "company,business_type",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "profile_name",
+ "track_changes": 1
+}

@@ -1,0 +1,8 @@
+# patches.txt
+# List all migration patches in execution order.
+# Format: module_path.patch_name
+# Never remove a patch once it has been applied to production.
+# Never reorder patches — only append new ones at the bottom.
+
+bharat_business.patches.v1_0.create_default_roles
+bharat_business.patches.v1_0.create_default_workspaces

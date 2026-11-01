@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "autoname": "format:WIZ-{company}-{####}",
+ "creation": "2026-11-01 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "business_profile",
+  "current_step",
+  "column_break_1",
+  "is_complete",
+  "completed_at",
+  "section_step_data",
+  "step_data"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "business_profile",
+   "fieldtype": "Link",
+   "label": "Business Profile",
+   "options": "BB Business Profile"
+  },
+  {
+   "fieldname": "current_step",
+   "fieldtype": "Int",
+   "label": "Current Step",
+   "default": "1",
+   "description": "Which wizard step the user last completed (1–11)"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "is_complete",
+   "fieldtype": "Check",
+   "label": "Wizard Complete",
+   "read_only": 1
+  },
+  {
+   "fieldname": "completed_at",
+   "fieldtype": "Datetime",
+   "label": "Completed At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_step_data",
+   "fieldtype": "Section Break",
+   "label": "Collected Data"
+  },
+  {
+   "fieldname": "step_data",
+   "fieldtype": "Code",
+   "label": "Step Data (JSON)",
+   "options": "JSON",
+   "description": "Serialized wizard answers. Written by OnboardingService, not manually."
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Bharat Business Setup",
+ "name": "BB Onboarding Wizard",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "read": 1,
+   "role": "Bharat Business Owner",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "System Manager",
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "company",
+ "track_changes": 1
+}
