@@ -15,10 +15,20 @@ from frappe.exceptions import ValidationError
 class TestBBBusinessProfile(unittest.TestCase):
 
     def setUp(self):
-        # Use the test company created by ERPNext's test setup
         self.test_company = frappe.db.get_value("Company", {"country": "India"}, "name")
         if not self.test_company:
-            self.skipTest("No Indian company found on test site.")
+            # Create a test company for tests
+            company = frappe.get_doc(
+                {
+                    "doctype": "Company",
+                    "company_name": "_Test Bharat Co",
+                    "abbr": "_TBC",
+                    "default_currency": "INR",
+                    "country": "India",
+                }
+            )
+            company.insert(ignore_permissions=True)
+            self.test_company = company.name
 
     def _make_profile(self, **kwargs):
         defaults = {
@@ -42,7 +52,7 @@ class TestBBBusinessProfile(unittest.TestCase):
     def test_registered_requires_gstin(self):
         """Registered Regular without GSTIN must fail validation."""
         profile = self._make_profile(gst_category="Registered Regular", gstin="")
-        with self.assertRaises(frappe.exceptions.ValidationError):
+        with self.assertRaises(ValidationError):
             profile.validate()
 
     def test_invalid_gstin_format(self):
@@ -51,7 +61,7 @@ class TestBBBusinessProfile(unittest.TestCase):
             gst_category="Registered Regular",
             gstin="INVALID_GSTIN_FORMAT",
         )
-        with self.assertRaises(frappe.exceptions.ValidationError):
+        with self.assertRaises(ValidationError):
             profile.validate()
 
     def test_valid_gstin_accepted(self):
@@ -62,7 +72,7 @@ class TestBBBusinessProfile(unittest.TestCase):
         )
         try:
             profile.validate()
-        except frappe.exceptions.ValidationError as e:
+        except ValidationError as e:
             self.fail(f"validate() raised on valid GSTIN: {e}")
 
     def test_gstin_uppercased(self):
