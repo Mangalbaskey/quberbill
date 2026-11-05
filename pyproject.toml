@@ -1,9 +1,9 @@
 [project]
 name = "bharat_business"
 authors = [
-    { name = "Bharat Business", email = "hello@bharatbusiness.in" }
+    { name = "QuberBill", email = "support@quberbill.com" }
 ]
-description = "Indian Small Business Operating Platform built on Frappe + ERPNext"
+description = "QuberBill — Smart Small Business Operating Platform & Billing System built on Frappe + ERPNext"
 readme = "README.md"
 dynamic = ["version"]
 

@@ -73,10 +73,32 @@ bharat_business = {
     isBBUser() {
         return (frappe.user_roles || []).some(r => r.startsWith('Bharat Business'));
     },
+
+    /**
+     * Applies QuberBill favicon dynamically to ensure browser tab branding.
+     */
+    applyBranding() {
+        const faviconUrl = '/assets/bharat_business/images/favicon.png';
+        let link = document.querySelector("link[rel*='icon']");
+        if (!link) {
+            link = document.createElement('link');
+            link.rel = 'shortcut icon';
+            document.head.appendChild(link);
+        }
+        if (link.getAttribute('href') !== faviconUrl) {
+            link.href = faviconUrl;
+            link.type = 'image/png';
+        }
+    },
 };
 
-// On every page load, redirect to onboarding if not complete
+// Aliases
+frappe.provide('quberbill');
+window.quberbill = bharat_business;
+
+// On every page load, apply branding and redirect to onboarding if needed
 frappe.after_ajax(function () {
+    bharat_business.applyBranding();
     if (bharat_business.isBBUser()) {
         bharat_business.checkOnboarding();
     }

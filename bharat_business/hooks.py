@@ -10,13 +10,30 @@ not to replace.
 """
 
 app_name = "bharat_business"
-app_title = "Bharat Business"
-app_publisher = "Bharat Business"
-app_description = "Indian Small Business Operating Platform built on Frappe + ERPNext"
-app_email = "hello@bharatbusiness.in"
+app_title = "QuberBill"
+app_publisher = "QuberBill"
+app_description = "QuberBill — Smart Billing & Operating Platform for Indian Businesses"
+app_email = "support@quberbill.com"
 app_license = "MIT"
-app_icon = "fa fa-store"
-app_color = "#FF6B35"  # Saffron — Indian business identity
+app_icon = "fa fa-file-invoice-dollar"
+app_color = "#FF6B00"  # QuberBill Orange
+app_logo_url = "/assets/bharat_business/images/quberbill-logo.png"
+
+# Website context & favicon
+website_context = {
+    "favicon": "/assets/bharat_business/images/favicon.png",
+    "splash_image": "/assets/bharat_business/images/quberbill-logo.png",
+}
+favicon = "/assets/bharat_business/images/favicon.png"
+
+add_to_apps_screen = [
+    {
+        "name": "bharat_business",
+        "logo": "/assets/bharat_business/images/quberbill-icon.png",
+        "title": "QuberBill",
+        "route": "/app",
+    }
+]
 
 # Minimum required versions — prevents installation on incompatible stacks
 required_apps = ["frappe", "erpnext"]
@@ -113,10 +130,12 @@ jinja = {
 # Use Permission Manager or DocType fixtures to adjust standard permissions.
 
 # ---------------------------------------------------------------------------
-# Website / Portal
+# Website / Portal / Landing Page
 # ---------------------------------------------------------------------------
-# No public website pages in MVP. Reserved for future customer-portal feature.
-website_route_rules = []
+home_page = "index"
+website_route_rules = [
+    {"from_route": "/", "to_route": "index"},
+]
 
 # ---------------------------------------------------------------------------
 # Boot Session

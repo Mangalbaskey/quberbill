@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuberBill — Smart Billing & POS Platform for Indian Businesses</title>
+    <meta name="description" content="Lightning-fast GST billing, rapid POS checkout, thermal printing, stock tracking, and instant dynamic UPI payments designed for Indian retail and small businesses.">
+    <link rel="shortcut icon" href="/assets/bharat_business/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/bharat_business/images/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/bharat_business/images/apple-touch-icon.png">
+
+    <style>
+        /* -------------------------------------------------------------
+           QuberBill Brand Design System
+           ------------------------------------------------------------- */
+        :root {
+            --qb-navy: #002147;
+            --qb-navy-dark: #00152e;
+            --qb-navy-light: #0a2f5c;
+            --qb-orange: #FF6B00;
+            --qb-orange-hover: #e65c00;
+            --qb-orange-soft: #fff3eb;
+            --qb-green: #10B981;
+            --qb-green-soft: #ecfdf5;
+            --qb-blue: #2563EB;
+            --qb-blue-soft: #eff6ff;
+            --qb-gray-50: #f8fafc;
+            --qb-gray-100: #f1f5f9;
+            --qb-gray-200: #e2e8f0;
+            --qb-gray-300: #cbd5e1;
+            --qb-gray-600: #475569;
+            --qb-gray-700: #334155;
+            --qb-gray-900: #0f172a;
+            --qb-white: #ffffff;
+            --qb-radius-sm: 8px;
+            --qb-radius-md: 14px;
+            --qb-radius-lg: 20px;
+            --qb-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --qb-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+            --qb-shadow-lg: 0 10px 25px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+            --qb-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--qb-font);
+            color: var(--qb-gray-700);
+            background-color: var(--qb-white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* -------------------------------------------------------------
+           Layout Helpers
+           ------------------------------------------------------------- */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-light {
+            background-color: var(--qb-gray-50);
+            border-top: 1px solid var(--qb-gray-200);
+            border-bottom: 1px solid var(--qb-gray-200);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            background: var(--qb-orange-soft);
+            color: var(--qb-orange);
+            border: 1px solid rgba(255, 107, 0, 0.2);
+            margin-bottom: 16px;
+        }
+
+        .badge-green {
+            background: var(--qb-green-soft);
+            color: var(--qb-green);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        /* -------------------------------------------------------------
+           Header & Navbar
+           ------------------------------------------------------------- */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--qb-gray-200);
+            transition: all 0.2s ease;
+        }
+
+        .navbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand img {
+            height: 34px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--qb-gray-700);
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--qb-orange);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: var(--qb-radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--qb-orange);
+            color: var(--qb-white);
+            box-shadow: 0 2px 4px rgba(255, 107, 0, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: var(--qb-orange-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(255, 107, 0, 0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border-color: var(--qb-gray-300);
+            color: var(--qb-navy);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--qb-navy);
+            background: var(--qb-gray-50);
+        }
+
+        .btn-lg {
+            padding: 14px 28px;
+            font-size: 1.05rem;
+            border-radius: 10px;
+        }
+
+        /* -------------------------------------------------------------
+           Hero Section
+           ------------------------------------------------------------- */
+        .hero {
+            padding: 70px 0 90px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #ffffff 0%, var(--qb-gray-50) 100%);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--qb-navy);
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-content h1 span.text-orange {
+            color: var(--qb-orange);
+        }
+
+        .hero-content p.subtitle {
+            font-size: 1.2rem;
+            color: var(--qb-gray-600);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 36px;
+            flex-wrap: wrap;
+        }
+
+        .hero-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            padding-top: 20px;
+            border-top: 1px solid var(--qb-gray-200);
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--qb-gray-700);
+        }
+
+        .highlight-item svg {
+            color: var(--qb-green);
+            flex-shrink: 0;
+        }
+
+        /* -------------------------------------------------------------
+           POS Bill Interactive Mockup Card
+           ------------------------------------------------------------- */
+        .hero-card {
+            background: var(--qb-white);
+            border-radius: var(--qb-radius-lg);
+            border: 1px solid var(--qb-gray-200);
+            box-shadow: var(--qb-shadow-lg);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-topbar {
+            background: var(--qb-navy);
+            color: var(--qb-white);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-topbar .store-name {
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-topbar .badge-live {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 999px;
+            text-transform: uppercase;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .bill-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--qb-gray-600);
+            border-bottom: 1px dashed var(--qb-gray-300);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .bill-items {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .bill-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.92rem;
+        }
+
+        .bill-item-name {
+            font-weight: 600;
+            color: var(--qb-navy);
+        }
+
+        .bill-item-sub {
+            font-size: 0.78rem;
+            color: var(--qb-gray-600);
+        }
+
+        .bill-item-price {
+            font-weight: 700;
+            color: var(--qb-gray-900);
+        }
+
+        .bill-calc {
+            background: var(--qb-gray-50);
+            border-radius: var(--qb-radius-sm);
+            padding: 14px;
+            font-size: 0.88rem;
+            margin-bottom: 18px;
+        }
+
+        .bill-calc-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            color: var(--qb-gray-600);
+        }
+
+        .bill-calc-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--qb-navy);
+            border-top: 1px solid var(--qb-gray-200);
+            padding-top: 10px;
+            margin-top: 8px;
+        }
+
+        .bill-calc-total span.amount {
+            color: var(--qb-orange);
+        }
+
+        .bill-payment-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: var(--qb-radius-sm);
+            padding: 12px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #166534;
+        }
+
+        .bill-payment-box .upi-tag {
+            background: #16a34a;
+            color: #ffffff;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* -------------------------------------------------------------
+           Stats Banner
+           ------------------------------------------------------------- */
+        .stats-bar {
+            background: var(--qb-navy);
+            color: var(--qb-white);
+            padding: 36px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--qb-orange);
+            margin-bottom: 4px;
+        }
+
+        .stat-item p {
+            font-size: 0.95rem;
+            color: var(--qb-gray-300);
+            font-weight: 500;
+        }
+
+        /* -------------------------------------------------------------
+           Section Headings
+           ------------------------------------------------------------- */
+        .section-header {
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto 56px;
+        }
+
+        .section-header h2 {
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: var(--qb-navy);
+            margin-bottom: 14px;
+            letter-spacing: -0.01em;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--qb-gray-600);
+        }
+
+        /* -------------------------------------------------------------
+           Features Grid (Simple & Informative)
+           ------------------------------------------------------------- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .feature-card {
+            background: var(--qb-white);
+            border: 1px solid var(--qb-gray-200);
+            border-radius: var(--qb-radius-md);
+            padding: 32px 28px;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--qb-orange);
+            box-shadow: var(--qb-shadow-md);
+        }
+
+        .feature-icon-wrapper {
+            width: 54px;
+            height: 54px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon-orange {
+            background: var(--qb-orange-soft);
+            color: var(--qb-orange);
+        }
+
+        .feature-icon-blue {
+            background: var(--qb-blue-soft);
+            color: var(--qb-blue);
+        }
+
+        .feature-icon-green {
+            background: var(--qb-green-soft);
+            color: var(--qb-green);
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--qb-navy);
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--qb-gray-600);
+            margin-bottom: 18px;
+            flex-grow: 1;
+            line-height: 1.55;
+        }
+
+        .feature-bullets {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.88rem;
+            color: var(--qb-gray-700);
+            border-top: 1px solid var(--qb-gray-100);
+            padding-top: 14px;
+        }
+
+        .feature-bullets li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-bullets li svg {
+            color: var(--qb-orange);
+            flex-shrink: 0;
+        }
+
+        /* -------------------------------------------------------------
+           Business Types Section
+           ------------------------------------------------------------- */
+        .biz-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .biz-card {
+            background: var(--qb-white);
+            border: 1px solid var(--qb-gray-200);
+            border-radius: var(--qb-radius-md);
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .biz-card:hover {
+            border-color: var(--qb-navy);
+            background: var(--qb-white);
+            box-shadow: var(--qb-shadow-sm);
+        }
+
+        .biz-emoji {
+            font-size: 2rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .biz-info h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--qb-navy);
+            margin-bottom: 6px;
+        }
+
+        .biz-info p {
+            font-size: 0.88rem;
+            color: var(--qb-gray-600);
+        }
+
+        /* -------------------------------------------------------------
+           Workflow / How It Works
+           ------------------------------------------------------------- */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            position: relative;
+        }
+
+        .step-card {
+            background: var(--qb-white);
+            border: 1px solid var(--qb-gray-200);
+            border-radius: var(--qb-radius-md);
+            padding: 32px 24px;
+            position: relative;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--qb-navy);
+            color: var(--qb-white);
+            font-weight: 800;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .step-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--qb-navy);
+            margin-bottom: 10px;
+        }
+
+        .step-card p {
+            font-size: 0.92rem;
+            color: var(--qb-gray-600);
+        }
+
+        /* -------------------------------------------------------------
+           FAQ Accordion
+           ------------------------------------------------------------- */
+        .faq-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            background: var(--qb-white);
+            border: 1px solid var(--qb-gray-200);
+            border-radius: var(--qb-radius-sm);
+            padding: 22px 26px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--qb-gray-300);
+        }
+
+        .faq-question {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--qb-navy);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            margin-top: 12px;
+            font-size: 0.95rem;
+            color: var(--qb-gray-600);
+            line-height: 1.6;
+        }
+
+        /* -------------------------------------------------------------
+           Bottom Call To Action Banner
+           ------------------------------------------------------------- */
+        .cta-section {
+            background: linear-gradient(135deg, var(--qb-navy) 0%, var(--qb-navy-dark) 100%);
+            color: var(--qb-white);
+            text-align: center;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box h2 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .cta-box p {
+            font-size: 1.15rem;
+            color: var(--qb-gray-300);
+            max-width: 600px;
+            margin: 0 auto 36px;
+        }
+
+        .cta-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        /* -------------------------------------------------------------
+           Footer
+           ------------------------------------------------------------- */
+        .footer {
+            background: #001226;
+            color: var(--qb-gray-300);
+            padding: 60px 0 30px;
+            font-size: 0.9rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-about img {
+            height: 32px;
+            width: auto;
+            margin-bottom: 16px;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-about p {
+            font-size: 0.88rem;
+            color: var(--qb-gray-300);
+            max-width: 280px;
+            line-height: 1.5;
+        }
+
+        .footer-col h5 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--qb-white);
+            margin-bottom: 16px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-col ul li a {
+            color: var(--qb-gray-300);
+            transition: color 0.2s ease;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--qb-orange);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.82rem;
+            color: var(--qb-gray-300);
+        }
+
+        /* -------------------------------------------------------------
+           Responsive Media Queries
+           ------------------------------------------------------------- */
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .biz-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .navbar-inner {
+                height: 64px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            .hero-content p.subtitle {
+                font-size: 1rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .biz-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-highlights {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- -------------------------------------------------------------
+         Navbar
+         ------------------------------------------------------------- -->
+    <header class="navbar">
+        <div class="container navbar-inner">
+            <a href="/" class="navbar-brand">
+                <img src="/assets/bharat_business/images/quberbill-logo.png" alt="QuberBill Logo">
+            </a>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#features" class="nav-link">Features</a></li>
+                    <li><a href="#solutions" class="nav-link">Solutions</a></li>
+                    <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+                    <li><a href="#faq" class="nav-link">FAQ</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="/login" class="btn btn-outline">Log In</a>
+                <a href="/app" class="btn btn-primary">
+                    <span>Open Billing POS</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- -------------------------------------------------------------
+         Hero Section
+         ------------------------------------------------------------- -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m13 2-2 10h5L11 22l2-10H8z"/></svg>
+                    Built for Indian Retailers, Shops & Wholesalers
+                </div>
+
+                <h1>
+                    Lightning-Fast Billing.<br>
+                    <span class="text-orange">Zero ERP Friction.</span>
+                </h1>
+
+                <p class="subtitle">
+                    Generate 100% GST-compliant invoices in under 10 seconds. Print 2" & 3" thermal receipts, collect instant UPI QR payments, and track live stock on any laptop, tablet, or phone.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="/app" class="btn btn-primary btn-lg">
+                        <span>Launch QuberBill POS</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    </a>
+                    <a href="#features" class="btn btn-outline btn-lg">Explore Features</a>
+                </div>
+
+                <div class="hero-highlights">
+                    <div class="highlight-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>100% GST & HSN Compliant</span>
+                    </div>
+                    <div class="highlight-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>2" & 3" Thermal ESC/POS Ready</span>
+                    </div>
+                    <div class="highlight-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Dynamic UPI QR Payments</span>
+                    </div>
+                    <div class="highlight-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Works on Mobile, Tablet & PC</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive POS Mockup -->
+            <div class="hero-card">
+                <div class="card-topbar">
+                    <div class="store-name">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                        <span>Sri Sai Supermarket</span>
+                    </div>
+                    <span class="badge-live">Live POS Desk</span>
+                </div>
+
+                <div class="card-body">
+                    <div class="bill-header">
+                        <div>
+                            <strong>Invoice:</strong> #QB-2026-1048<br>
+                            <strong>Date:</strong> 05 Nov 2026, 07:45 PM
+                        </div>
+                        <div style="text-align: right;">
+                            <strong>Customer:</strong> Cash / Walk-in<br>
+                            <strong>Cashier:</strong> Counter 01
+                        </div>
+                    </div>
+
+                    <ul class="bill-items">
+                        <li class="bill-item">
+                            <div>
+                                <div class="bill-item-name">Aashirvaad Shudh Chakki Atta (5kg)</div>
+                                <div class="bill-item-sub">HSN 11010000 · 2 × ₹270.00 (GST 5%)</div>
+                            </div>
+                            <div class="bill-item-price">₹540.00</div>
+                        </li>
+                        <li class="bill-item">
+                            <div>
+                                <div class="bill-item-name">Tata Tea Gold (500g Pack)</div>
+                                <div class="bill-item-sub">HSN 09024020 · 1 × ₹280.00 (GST 5%)</div>
+                            </div>
+                            <div class="bill-item-price">₹280.00</div>
+                        </li>
+                        <li class="bill-item">
+                            <div>
+                                <div class="bill-item-name">Fortune Kachi Ghani Mustard Oil (1L)</div>
+                                <div class="bill-item-sub">HSN 15149110 · 3 × ₹165.00 (GST 5%)</div>
+                            </div>
+                            <div class="bill-item-price">₹495.00</div>
+                        </li>
+                    </ul>
+
+                    <div class="bill-calc">
+                        <div class="bill-calc-row">
+                            <span>Taxable Amount</span>
+                            <span>₹1,252.38</span>
+                        </div>
+                        <div class="bill-calc-row">
+                            <span>CGST (2.5%) + SGST (2.5%)</span>
+                            <span>₹62.62</span>
+                        </div>
+                        <div class="bill-calc-total">
+                            <span>Total Due</span>
+                            <span class="amount">₹1,315.00</span>
+                        </div>
+                    </div>
+
+                    <div class="bill-payment-box">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Paid via Dynamic UPI (GPay/PhonePe)</span>
+                        </div>
+                        <span class="upi-tag">Instant Settled</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- -------------------------------------------------------------
+         Stats Bar
+         ------------------------------------------------------------- -->
+    <div class="stats-bar">
+        <div class="container stats-grid">
+            <div class="stat-item">
+                <h3>&lt; 10 Sec</h3>
+                <p>Average Billing Speed per Customer</p>
+            </div>
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>GST & e-Way Bill Compliance</p>
+            </div>
+            <div class="stat-item">
+                <h3>2" & 3"</h3>
+                <p>Direct ESC/POS Thermal Printing</p>
+            </div>
+            <div class="stat-item">
+                <h3>0 Days</h3>
+                <p>Staff Training Required</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- -------------------------------------------------------------
+         Features Section
+         ------------------------------------------------------------- -->
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="badge">Powerful Capabilities</div>
+                <h2>Simple Billing. Serious Power.</h2>
+                <p>Every feature you need to run high-volume checkout counters, maintain clean accounting books, and delight your customers.</p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper feature-icon-orange">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+                    </div>
+                    <h3>Rapid POS & Barcode Checkout</h3>
+                    <p>Scan products with standard USB or Bluetooth barcode guns. Instant search by SKU, item name, or short code with zero lag.</p>
+                    <ul class="feature-bullets">
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Single-click keyboard shortcuts (F2, F8, F9)
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Instant item weight & loose item entries
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Split payments: Cash, UPI, Card & Khata
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper feature-icon-blue">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <h3>Automated Indian GST & HSN</h3>
+                    <p>Never worry about wrong tax slabs. QuberBill automatically calculates CGST + SGST for local sales, or IGST for interstate buyers.</p>
+                    <ul class="feature-bullets">
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Pre-configured 0%, 5%, 12%, 18%, 28% slabs
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            HSN/SAC search and auto-complete
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            India Compliance ready (GSTR-1, e-Way bills)
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper feature-icon-green">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01M12 12h.01"/></svg>
+                    </div>
+                    <h3>Dynamic UPI QR Payments</h3>
+                    <p>Show dynamic, amount-coded QR codes directly on the POS screen or printed bill. Customers scan & pay with zero manual entry.</p>
+                    <ul class="feature-bullets">
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Works with PhonePe, Google Pay, Paytm, BHIM
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Direct bank settlement with zero swipe fees
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Instant audio/visual payment confirmation
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper feature-icon-orange">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+                    </div>
+                    <h3>Real-Time Inventory & Stock Alerts</h3>
+                    <p>Stock levels automatically deduct as invoices are generated. Never sell an out-of-stock item or miss high-margin restocking.</p>
+                    <ul class="feature-bullets">
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Low stock alerts right on the billing screen
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Batch, serial number, and expiry date tracking
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Multi-warehouse and godown stock transfers
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper feature-icon-blue">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                    </div>
+                    <h3>Universal Printing & Sharing</h3>
+                    <p>Print to any 58mm (2") or 80mm (3") thermal receipt printer, A4/A5 laser printer, or share digital bills via WhatsApp in 1 click.</p>
+                    <ul class="feature-bullets">
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            High-speed ESC/POS USB, Bluetooth & Network print
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Custom logo, terms, and bank details on receipts
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Instant PDF export & paperless WhatsApp bills
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper feature-icon-green">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <h3>Cash Drawer & Daily Insights</h3>
+                    <p>Track cash collected, reconcile opening & closing drawer balance, and get automated daily profit digests sent directly to the owner.</p>
+                    <ul class="feature-bullets">
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Daily cash opening, payouts, and drawer closing
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Payment breakdown: Cash vs UPI vs Card
+                        </li>
+                        <li>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Customer credit (Khata) & outstanding ledger
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- -------------------------------------------------------------
+         Solutions / Business Types
+         ------------------------------------------------------------- -->
+    <section class="section section-light" id="solutions">
+        <div class="container">
+            <div class="section-header">
+                <div class="badge">Made for India</div>
+                <h2>Built for Your Exact Type of Business</h2>
+                <p>Configures itself automatically during quick onboarding to match your everyday workflow.</p>
+            </div>
+
+            <div class="biz-grid">
+                <div class="biz-card">
+                    <div class="biz-emoji">🛒</div>
+                    <div class="biz-info">
+                        <h4>Kirana & Supermarkets</h4>
+                        <p>Fast barcode scanning, loose grain weighing, quick change calculation, and customer credit khata.</p>
+                    </div>
+                </div>
+
+                <div class="biz-card">
+                    <div class="biz-emoji">👕</div>
+                    <div class="biz-info">
+                        <h4>Apparel & Footwear</h4>
+                        <p>Size, color, and brand variant matrices, barcode label generation, and easy exchange handling.</p>
+                    </div>
+                </div>
+
+                <div class="biz-card">
+                    <div class="biz-emoji">🍽️</div>
+                    <div class="biz-info">
+                        <h4>Cafes & Quick Service</h4>
+                        <p>Rapid takeaway billing, KOT generation, table-less counter orders, and combo pricing.</p>
+                    </div>
+                </div>
+
+                <div class="biz-card">
+                    <div class="biz-emoji">📦</div>
+                    <div class="biz-info">
+                        <h4>Wholesale & Distribution</h4>
+                        <p>Customer-wise price lists, tiered quantity discounts, credit limits, and automated e-Way bills.</p>
+                    </div>
+                </div>
+
+                <div class="biz-card">
+                    <div class="biz-emoji">💊</div>
+                    <div class="biz-info">
+                        <h4>Pharmacies & Medical Stores</h4>
+                        <p>Batch numbers, expiry date enforcement, strip/tablet conversion, and schedule drug records.</p>
+                    </div>
+                </div>
+
+                <div class="biz-card">
+                    <div class="biz-emoji">🔧</div>
+                    <div class="biz-info">
+                        <h4>Hardware, Electronics & Repair</h4>
+                        <p>Serial number recording, warranty details on invoice, and combined labor plus spare parts billing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- -------------------------------------------------------------
+         How It Works (3 Steps)
+         ------------------------------------------------------------- -->
+    <section class="section" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <div class="badge">Simplicity First</div>
+                <h2>Start Billing in 3 Simple Steps</h2>
+                <p>No complicated training sessions, no weeks of setup. Be up and running in 2 minutes.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Add Your Store & Items</h3>
+                    <p>Enter your store name, GSTIN (optional), and import products with a single Excel/CSV upload or add them on the fly during billing.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Scan & Bill Customers</h3>
+                    <p>Scan barcodes or type 2 letters to find items. The bill calculates taxes, round-offs, and shows the live amount in real-time.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Collect & Hand Over Slip</h3>
+                    <p>Tap UPI QR or Cash, collect payment, and hand over a crisp 3" thermal receipt or send the invoice link directly to their phone.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- -------------------------------------------------------------
+         FAQ Section
+         ------------------------------------------------------------- -->
+    <section class="section section-light" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <div class="badge">Got Questions?</div>
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about setting up QuberBill for your counter.</p>
+            </div>
+
+            <div class="faq-wrapper">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Does QuberBill work with my existing thermal printer?</span>
+                        <span style="color: var(--qb-orange);">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! QuberBill supports all standard 2" (58mm) and 3" (80mm) ESC/POS thermal printers connected via USB, Bluetooth, or Wi-Fi. It also supports regular A4/A5 laser/inkjet printers for formal tax invoices.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How does GST calculation work?</span>
+                        <span style="color: var(--qb-orange);">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Taxes are computed automatically based on the HSN code and customer location. Local sales are automatically split into CGST and SGST, while out-of-state sales apply IGST. Non-GST composite dealers can also bill with 0% tax.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I import my existing product catalog from Excel?</span>
+                        <span style="color: var(--qb-orange);">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Absolutely. You can import thousands of items along with their barcode, HSN, price, and current stock using a standard Excel/CSV spreadsheet template in 30 seconds.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What devices does QuberBill run on?</span>
+                        <span style="color: var(--qb-orange);">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        QuberBill runs on any modern web browser — Windows PCs, Mac, Android tablets, iPads, and smartphones. There is no software installation required on client devices.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- -------------------------------------------------------------
+         Bottom CTA
+         ------------------------------------------------------------- -->
+    <section class="cta-section">
+        <div class="container cta-box">
+            <h2>Speed Up Your Checkout Lines Today.</h2>
+            <p>Join smart retailers across India who trust QuberBill for lightning-fast billing and error-free inventory.</p>
+            <div class="cta-actions">
+                <a href="/app" class="btn btn-primary btn-lg">
+                    <span>Open QuberBill POS</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                </a>
+                <a href="/login" class="btn btn-outline btn-lg" style="color: #ffffff; border-color: rgba(255,255,255,0.4);">
+                    <span>Sign In to Dashboard</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- -------------------------------------------------------------
+         Footer
+         ------------------------------------------------------------- -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <img src="/assets/bharat_business/images/quberbill-logo.png" alt="QuberBill">
+                    <p>Smart, high-speed billing and business management platform designed specifically for Indian retail and small businesses.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Features</h5>
+                    <ul>
+                        <li><a href="#features">Rapid POS Billing</a></li>
+                        <li><a href="#features">GST & Tax Compliance</a></li>
+                        <li><a href="#features">Dynamic UPI QR Codes</a></li>
+                        <li><a href="#features">Thermal Receipt Printing</a></li>
+                        <li><a href="#features">Live Stock Management</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Industries</h5>
+                    <ul>
+                        <li><a href="#solutions">Kirana & Supermarkets</a></li>
+                        <li><a href="#solutions">Apparel & Footwear</a></li>
+                        <li><a href="#solutions">Restaurants & Cafes</a></li>
+                        <li><a href="#solutions">Wholesale & Trade</a></li>
+                        <li><a href="#solutions">Medical & Pharmacies</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Access</h5>
+                    <ul>
+                        <li><a href="/app">Launch Billing Desk</a></li>
+                        <li><a href="/login">User Login</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>&copy; 2026 QuberBill. Built on Frappe Framework & ERPNext. All rights reserved.</div>
+                <div>Fast · Reliable · 100% Indian GST Ready</div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -17,12 +17,14 @@ def after_install():
     """Run once when the app is first installed on a site."""
     _create_roles()
     _create_default_workspaces()
+    _setup_branding()
     frappe.db.commit()
 
 
 def after_migrate():
     """Run after every `bench migrate` — must be idempotent."""
     _create_roles()
+    _setup_branding()
     frappe.db.commit()
 
 
@@ -32,6 +34,38 @@ def after_uninstall():
     # Workspaces and custom fields are cleaned up by Frappe automatically
     # when the app is uninstalled via `bench uninstall-app`.
     pass
+
+
+def _setup_branding():
+    """Apply QuberBill branding to Website Settings, Navbar Settings, and System Settings."""
+    try:
+        # Website Settings
+        if frappe.db.exists("DocType", "Website Settings"):
+            ws = frappe.get_single("Website Settings")
+            ws.app_name = "QuberBill"
+            ws.home_page = "index"
+            ws.app_logo = "/assets/bharat_business/images/quberbill-logo.png"
+            ws.favicon = "/assets/bharat_business/images/favicon.png"
+            ws.splash_image = "/assets/bharat_business/images/quberbill-logo.png"
+            ws.banner_image = "/assets/bharat_business/images/quberbill-logo.png"
+            ws.brand_html = '<img src="/assets/bharat_business/images/quberbill-logo.png" style="max-height: 32px;" alt="QuberBill">'
+            ws.save(ignore_permissions=True)
+
+        # Navbar Settings
+        if frappe.db.exists("DocType", "Navbar Settings"):
+            ns = frappe.get_single("Navbar Settings")
+            ns.app_logo = "/assets/bharat_business/images/quberbill-logo.png"
+            ns.save(ignore_permissions=True)
+
+        # System Settings
+        if frappe.db.exists("DocType", "System Settings"):
+            ss = frappe.get_single("System Settings")
+            ss.app_name = "QuberBill"
+            ss.save(ignore_permissions=True)
+
+        frappe.logger().info("[bharat_business] Applied QuberBill branding successfully")
+    except Exception:
+        frappe.log_error(frappe.get_traceback(), "[bharat_business] branding setup error")
 
 
 # ---------------------------------------------------------------------------

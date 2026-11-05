@@ -1,8 +1,12 @@
-# Bharat Business
+# QuberBill
 
-**Indian Small Business Operating Platform** built on [Frappe Framework](https://frappeframework.com/) and [ERPNext](https://erpnext.com/).
+<p align="center">
+  <img src="bharat_business/public/images/quberbill-logo.png" alt="QuberBill Logo" width="380">
+</p>
 
-Bharat Business wraps ERPNext's proven business engine with a simplified, mobile-first experience designed for Indian small and medium businesses.
+**QuberBill — Smart Small Business Operating Platform & Billing System** built on [Frappe Framework](https://frappeframework.com/) and [ERPNext](https://erpnext.com/).
+
+QuberBill wraps ERPNext's proven business engine with a simplified, lightning-fast, mobile-first experience designed for Indian retail and small businesses.
 
 ## Supported Business Types
 

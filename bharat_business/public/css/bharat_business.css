@@ -8,18 +8,20 @@
  */
 
 /* -------------------------------------------------------------------------
-   Design Tokens
+   Design Tokens - QuberBill Brand Identity
    ------------------------------------------------------------------------- */
 :root {
-    --bb-primary:      #FF6B35; /* Saffron */
-    --bb-primary-dark: #E05520;
-    --bb-secondary:    #2ECC71; /* Emerald */
-    --bb-accent:       #3498DB; /* Sky Blue */
-    --bb-text:         #1A1A2E;
-    --bb-text-muted:   #6B7280;
-    --bb-bg:           #F9FAFB;
+    --bb-primary:      #FF6B00; /* QuberBill Vibrant Orange */
+    --bb-primary-dark: #E05A00;
+    --bb-navy:         #002147; /* Quber Navy */
+    --bb-navy-dark:    #00142D;
+    --bb-secondary:    #10B981; /* Emerald Green */
+    --bb-accent:       #0A2540; /* Quber Deep Navy */
+    --bb-text:         #0A2540;
+    --bb-text-muted:   #64748B;
+    --bb-bg:           #F8FAFC;
     --bb-surface:      #FFFFFF;
-    --bb-border:       #E5E7EB;
+    --bb-border:       #E2E8F0;
     --bb-radius:       12px;
     --bb-radius-sm:    8px;
     --bb-shadow:       0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -214,3 +216,28 @@
 
 .bb-wizard-step-dot.active  { background: var(--bb-primary); }
 .bb-wizard-step-dot.done    { background: var(--bb-secondary); }
+
+/* -------------------------------------------------------------------------
+   QuberBill Desk & Branding Overrides
+   ------------------------------------------------------------------------- */
+.navbar-brand .app-logo,
+.navbar .navbar-home img,
+.navbar-brand img,
+.app-logo img {
+    max-height: 28px !important;
+    height: 28px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    vertical-align: middle;
+}
+
+.splash-logo {
+    max-width: 240px !important;
+    height: auto !important;
+}
+
+.page-card-head img {
+    max-height: 48px !important;
+    width: auto !important;
+    object-fit: contain !important;
+}
