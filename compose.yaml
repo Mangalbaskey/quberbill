@@ -89,7 +89,8 @@ services:
         echo "$$SITE" > sites/currentsite.txt;
         cd sites && ln -sfn "$$SITE" quberbill.mooo.com 2>/dev/null || true;
         cd ..;
-        mkdir -p sites/assets/erpnext/images sites/assets/frappe/images 2>/dev/null || true;
+        mkdir -p sites/assets/bharat_business sites/assets/erpnext/images sites/assets/frappe/images 2>/dev/null || true;
+        cp -r apps/bharat_business/bharat_business/public/* sites/assets/bharat_business/ 2>/dev/null || true;
         cp apps/bharat_business/bharat_business/public/images/quberbill-icon.svg sites/assets/erpnext/images/erpnext-logo.svg 2>/dev/null || true;
         cp apps/bharat_business/bharat_business/public/images/quberbill-icon.svg sites/assets/erpnext/images/erp-icon.svg 2>/dev/null || true;
         cp apps/bharat_business/bharat_business/public/images/quberbill-icon.svg sites/assets/frappe/images/frappe-framework-logo.svg 2>/dev/null || true;

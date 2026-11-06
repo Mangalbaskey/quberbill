@@ -26,12 +26,15 @@ website_context = {
 }
 favicon = "/assets/bharat_business/images/favicon.png"
 
+setup_wizard_requires = "/assets/bharat_business/js/setup_wizard.js"
+
 add_to_apps_screen = [
     {
         "name": "bharat_business",
         "logo": "/assets/bharat_business/images/quberbill-icon.png",
         "title": "QuberBill",
         "route": "/app",
+        "setup_wizard_text": "Smart Billing & Operating Platform for Indian Businesses.",
     }
 ]
 
