@@ -85,16 +85,16 @@ services:
         echo "sites/common_site_config.json found";
         SITE=$${SITE_NAME:-frontend};
         echo "$$SITE" > sites/currentsite.txt;
+        cd sites && ln -sfn "$$SITE" quberbill.mooo.com 2>/dev/null || true;
+        cd ..;
         if [ -d "sites/$$SITE" ]; then
           echo "Site $$SITE already exists, running migrations";
+          bench --site $$SITE uninstall-app india_compliance --yes 2>/dev/null || true;
           bench --site $$SITE migrate;
           bench --site $$SITE execute frappe.db.set_single_value --args "['Website Settings', 'disable_signup', 0]";
         else
           echo "Creating site $$SITE";
           INSTALL_ARGS="--install-app erpnext";
-          if [ -d "apps/india_compliance" ]; then
-            INSTALL_ARGS="$$INSTALL_ARGS --install-app india_compliance";
-          fi;
           if [ -d "apps/bharat_business" ]; then
             INSTALL_ARGS="$$INSTALL_ARGS --install-app bharat_business";
           fi;
@@ -107,6 +107,7 @@ services:
             --set-default $$SITE;
           bench --site $$SITE execute frappe.db.set_single_value --args "['Website Settings', 'disable_signup', 0]";
         fi;
+        cd sites && ln -sfn "$$SITE" quberbill.mooo.com 2>/dev/null || true;
     environment:
       SITE_NAME: ${SITE_NAME:-frontend}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin}
@@ -152,7 +153,7 @@ services:
       - nginx-entrypoint.sh
     environment:
       BACKEND: backend:8000
-      FRAPPE_SITE_NAME_HEADER: ${FRAPPE_SITE_NAME_HEADER:-frontend}
+      FRAPPE_SITE_NAME_HEADER: ${FRAPPE_SITE_NAME_HEADER:-quberbill.mooo.com}
       SOCKETIO: websocket:9000
       UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
       UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
