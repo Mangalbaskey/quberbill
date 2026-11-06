@@ -20,18 +20,32 @@ frappe.setup.on("before_load", function () {
 $(document).ajaxSend(function (event, jqXHR, settings) {
 	if (settings.url && settings.url.includes("setup_complete")) {
 		try {
-			let data = new URLSearchParams(settings.data);
-			let argsStr = data.get("args");
-			if (argsStr) {
-				let argsObj = JSON.parse(argsStr);
-				if (!argsObj.country) argsObj.country = "India";
-				if (!argsObj.currency) argsObj.currency = "INR";
-				if (!argsObj.timezone) argsObj.timezone = "Asia/Kolkata";
-				data.set("args", JSON.stringify(argsObj));
-				settings.data = data.toString();
+			if (typeof settings.data === "string") {
+				if (settings.data.startsWith("{")) {
+					let payload = JSON.parse(settings.data);
+					if (payload.args) {
+						let inner = typeof payload.args === "string" ? JSON.parse(payload.args) : payload.args;
+						inner.country = inner.country || "India";
+						inner.currency = inner.currency || "INR";
+						inner.timezone = inner.timezone || "Asia/Kolkata";
+						payload.args = typeof payload.args === "string" ? JSON.stringify(inner) : inner;
+						settings.data = JSON.stringify(payload);
+					}
+				} else {
+					let data = new URLSearchParams(settings.data);
+					let argsStr = data.get("args");
+					if (argsStr) {
+						let argsObj = JSON.parse(argsStr);
+						argsObj.country = argsObj.country || "India";
+						argsObj.currency = argsObj.currency || "INR";
+						argsObj.timezone = argsObj.timezone || "Asia/Kolkata";
+						data.set("args", JSON.stringify(argsObj));
+						settings.data = data.toString();
+					}
+				}
 			}
 		} catch (e) {
-			console.error("QuberBill setup_wizard parameter injection notice:", e);
+			console.error("QuberBill parameter injection notice:", e);
 		}
 	}
 });

@@ -64,7 +64,22 @@ def _setup_branding():
         if frappe.db.exists("DocType", "System Settings"):
             ss = frappe.get_single("System Settings")
             ss.app_name = "QuberBill"
+            if not ss.country:
+                ss.country = "India"
+            if not ss.currency:
+                ss.currency = "INR"
+            if not ss.time_zone:
+                ss.time_zone = "Asia/Kolkata"
             ss.save(ignore_permissions=True)
+
+        # Global Defaults
+        if frappe.db.exists("DocType", "Global Defaults"):
+            gd = frappe.get_single("Global Defaults")
+            if not gd.default_currency:
+                gd.default_currency = "INR"
+            if not gd.country:
+                gd.country = "India"
+            gd.save(ignore_permissions=True)
 
         frappe.logger().info("[bharat_business] Applied QuberBill branding successfully")
     except Exception:
