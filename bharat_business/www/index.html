@@ -885,44 +885,168 @@
             }
         }
 
-        @media (max-width: 640px) {
-            .section {
-                padding: 60px 0;
-            }
-            .navbar-inner {
-                height: 62px;
-            }
-            .navbar-brand img {
-                height: 30px;
-            }
+        /* -------------------------------------------------------------
+           Mobile Toggle & Slide-down Menu
+           ------------------------------------------------------------- */
+        .btn-text-full { display: inline; }
+        .btn-text-short { display: none; }
+        .mobile-toggle {
+            display: none;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: var(--qb-radius-sm);
+            color: #f1f5f9;
+            width: 38px;
+            height: 38px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .mobile-toggle:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .mobile-toggle .icon-close { display: none; }
+        .mobile-toggle.active .icon-hamburger { display: none; }
+        .mobile-toggle.active .icon-close { display: block; }
+
+        .mobile-menu {
+            display: none;
+            background: #0c1424;
+            border-bottom: 1px solid var(--qb-border);
+            padding: 16px 20px 24px;
+        }
+        .mobile-menu.open {
+            display: block;
+            animation: mobileSlide 0.2s ease-out;
+        }
+        @keyframes mobileSlide {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .mobile-nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-bottom: 18px;
+        }
+        .mobile-nav-links a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 12px;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 0.98rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+        .mobile-nav-links a:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+        }
+        .mobile-menu-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-top: 14px;
+            border-top: 1px solid var(--qb-border);
+        }
+
+        @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
+            .mobile-toggle {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .section {
+                padding: 48px 0;
+            }
+            .navbar-inner {
+                height: 58px;
+                padding: 0 14px;
+            }
+            .navbar-brand img {
+                height: 26px;
+            }
+            .nav-actions {
+                gap: 8px;
+            }
             .btn-nav-login {
                 padding: 6px 12px;
-                font-size: 0.84rem;
+                font-size: 0.82rem;
+                white-space: nowrap;
             }
             .btn-nav-pos {
-                padding: 7px 14px;
-                font-size: 0.84rem;
+                padding: 6px 12px;
+                font-size: 0.82rem;
+                white-space: nowrap;
+            }
+            .btn-text-full { display: none; }
+            .btn-text-short { display: inline; }
+
+            /* Hero mobile typography & padding */
+            .hero {
+                padding: 38px 0 46px;
+            }
+            .hero-grid {
+                gap: 28px;
+            }
+            .hero-content h1 {
+                font-size: 1.85rem;
+                line-height: 1.22;
+                letter-spacing: -0.015em;
+                margin-bottom: 14px;
+            }
+            .hero-content p.subtitle {
+                font-size: 0.94rem;
+                line-height: 1.55;
+                margin-bottom: 22px;
+            }
+            .badge {
+                font-size: 0.78rem;
+                padding: 5px 12px;
+                margin-bottom: 14px;
             }
             .hero-actions {
                 flex-direction: column;
-                align-items: stretch;
+                gap: 10px;
+                width: 100%;
+                margin-bottom: 22px;
             }
             .hero-actions .btn {
                 width: 100%;
+                padding: 13px 18px;
+                font-size: 0.95rem;
             }
             .hero-highlights {
                 grid-template-columns: 1fr;
-                gap: 10px;
+                gap: 8px;
+                padding-top: 16px;
+            }
+            .highlight-item {
+                font-size: 0.88rem;
+            }
+            .hero-card {
+                margin-top: 8px;
+                border-radius: var(--qb-radius-md);
             }
             .biz-grid {
                 grid-template-columns: 1fr;
+                gap: 14px;
             }
             .trust-grid {
                 grid-template-columns: 1fr;
-                gap: 24px;
+                gap: 20px;
             }
             .footer-grid {
                 grid-template-columns: 1fr;
@@ -932,6 +1056,26 @@
                 flex-direction: column;
                 gap: 10px;
                 text-align: center;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .navbar-inner {
+                padding: 0 10px;
+            }
+            .navbar-brand img {
+                height: 23px;
+            }
+            .btn-nav-login {
+                padding: 5px 8px;
+                font-size: 0.78rem;
+            }
+            .btn-nav-pos {
+                padding: 5px 9px;
+                font-size: 0.78rem;
+            }
+            .hero-content h1 {
+                font-size: 1.68rem;
             }
         }
     </style>
@@ -959,9 +1103,29 @@
             <div class="nav-actions">
                 <a href="/login" class="btn-nav-login">Sign In</a>
                 <a href="/login#signup" class="btn-nav-pos">
-                    <span>Create Free Account</span>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    <span class="btn-text-full">Create Free Account</span>
+                    <span class="btn-text-short">Start Free</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
                 </a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation" onclick="toggleMobileNav()">
+                    <svg class="icon-hamburger" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    <svg class="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Slide-down Mobile Menu Drawer -->
+        <div class="mobile-menu" id="mobileMenu">
+            <ul class="mobile-nav-links">
+                <li><a href="#features" onclick="toggleMobileNav()">Features <span>&rarr;</span></a></li>
+                <li><a href="#how-it-works" onclick="toggleMobileNav()">How It Works <span>&rarr;</span></a></li>
+                <li><a href="#solutions" onclick="toggleMobileNav()">Solutions <span>&rarr;</span></a></li>
+                <li><a href="#faq" onclick="toggleMobileNav()">FAQ <span>&rarr;</span></a></li>
+                <li><a href="/users" onclick="toggleMobileNav()" style="color: #fb923c;">Developer Auth Console <span>&rarr;</span></a></li>
+            </ul>
+            <div class="mobile-menu-actions">
+                <a href="/login" class="btn btn-outline" style="width: 100%; justify-content: center;">Sign In</a>
+                <a href="/login#signup" class="btn btn-primary" style="width: 100%; justify-content: center;">Create Free Account</a>
             </div>
         </div>
     </header>
@@ -1420,5 +1584,15 @@
         </div>
     </footer>
 
+    <script>
+        function toggleMobileNav() {
+            const menu = document.getElementById("mobileMenu");
+            const btn = document.getElementById("mobileToggle");
+            if (menu && btn) {
+                menu.classList.toggle("open");
+                btn.classList.toggle("active");
+            }
+        }
+    </script>
 </body>
 </html>
