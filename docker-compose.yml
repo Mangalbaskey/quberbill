@@ -160,7 +160,9 @@ services:
       - sites:/home/frappe/frappe-bench/sites
       - logs:/home/frappe/frappe-bench/logs
     ports:
-      - "8080:8080"
+      - "${FRONTEND_PORT:-8082}:8080"
+    expose:
+      - "8080"
 
   queue-long:
     build:
