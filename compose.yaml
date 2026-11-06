@@ -41,6 +41,8 @@ services:
         bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
         bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
         bench set-config -gp socketio_port $$SOCKETIO_PORT;
+        cd sites && ln -sfn frontend quberbill.mooo.com 2>/dev/null || true;
+        cd ..;
     environment:
       DB_HOST: db
       DB_PORT: "3306"
@@ -89,9 +91,21 @@ services:
         cd ..;
         if [ -d "sites/$$SITE" ]; then
           echo "Site $$SITE already exists, running migrations";
+          bench --site $$SITE set-maintenance-mode off 2>/dev/null || true;
           bench --site $$SITE uninstall-app india_compliance --yes 2>/dev/null || true;
-          bench --site $$SITE migrate;
-          bench --site $$SITE execute frappe.db.set_single_value --args "['Website Settings', 'disable_signup', 0]";
+          /home/frappe/frappe-bench/env/bin/python -c "
+import frappe
+try:
+    frappe.init(site='$$SITE')
+    frappe.connect()
+    frappe.db.sql(\"DELETE FROM \\\`tabInstalled Application\\\` WHERE app_name = 'india_compliance'\")
+    frappe.db.commit()
+except Exception as e:
+    pass
+" 2>/dev/null || true;
+          bench --site $$SITE migrate --skip-failing 2>/dev/null || bench --site $$SITE migrate 2>/dev/null || true;
+          bench --site $$SITE set-maintenance-mode off 2>/dev/null || true;
+          bench --site $$SITE execute frappe.db.set_single_value --args "['Website Settings', 'disable_signup', 0]" 2>/dev/null || true;
         else
           echo "Creating site $$SITE";
           INSTALL_ARGS="--install-app erpnext";
