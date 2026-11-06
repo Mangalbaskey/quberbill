@@ -1,6 +1,13 @@
 frappe.provide("frappe.setup");
+frappe.provide("frappe.wizard");
 
 frappe.setup.on("before_load", function () {
+	// Set default wizard values so downstream slides have access
+	if (!frappe.wizard.values) frappe.wizard.values = {};
+	frappe.wizard.values.country = "India";
+	frappe.wizard.values.currency = "INR";
+	frappe.wizard.values.timezone = "Asia/Kolkata";
+
 	frappe.setup.intro_apps = [
 		{
 			name: "bharat_business",
@@ -16,7 +23,41 @@ frappe.setup.on("before_load", function () {
 	}, 50);
 });
 
-// Intercept setup_complete call to ensure country, currency, and timezone are always set
+// Helper to ensure Chart of Accounts options are populated on Step 2
+function checkAndPopulateCOA() {
+	if (!frappe.wizard.values) frappe.wizard.values = {};
+	frappe.wizard.values.country = "India";
+	frappe.wizard.values.currency = "INR";
+
+	const coaSelect = $('select[data-fieldname="chart_of_accounts"]');
+	if (coaSelect.length) {
+		const currentOptions = coaSelect.find("option");
+		// If empty or only blank placeholder exists
+		if (currentOptions.length <= 1) {
+			const options = [
+				{ value: "Standard", text: "Standard" },
+				{ value: "India - Chart of Accounts", text: "India - Chart of Accounts" },
+			];
+			coaSelect.empty();
+			options.forEach(function (opt) {
+				coaSelect.append($("<option>", { value: opt.value, text: opt.text }));
+			});
+			coaSelect.val("Standard").trigger("change");
+		}
+	}
+
+	// Auto-populate Financial Year if blank
+	const fyInput = $('input[data-fieldname="fy_start_date"]');
+	if (fyInput.length && !fyInput.val()) {
+		const today = new Date();
+		const year = today.getFullYear();
+		// Indian FY starts April 1st
+		const fyStart = today.getMonth() >= 3 ? `${year}-04-01` : `${year - 1}-04-01`;
+		fyInput.val(fyStart).trigger("change");
+	}
+}
+
+// Intercept setup_complete call to ensure country, currency, and chart of accounts are always set
 $(document).ajaxSend(function (event, jqXHR, settings) {
 	if (settings.url && settings.url.includes("setup_complete")) {
 		try {
@@ -28,6 +69,7 @@ $(document).ajaxSend(function (event, jqXHR, settings) {
 						inner.country = inner.country || "India";
 						inner.currency = inner.currency || "INR";
 						inner.timezone = inner.timezone || "Asia/Kolkata";
+						inner.chart_of_accounts = inner.chart_of_accounts || "Standard";
 						payload.args = typeof payload.args === "string" ? JSON.stringify(inner) : inner;
 						settings.data = JSON.stringify(payload);
 					}
@@ -39,6 +81,7 @@ $(document).ajaxSend(function (event, jqXHR, settings) {
 						argsObj.country = argsObj.country || "India";
 						argsObj.currency = argsObj.currency || "INR";
 						argsObj.timezone = argsObj.timezone || "Asia/Kolkata";
+						argsObj.chart_of_accounts = argsObj.chart_of_accounts || "Standard";
 						data.set("args", JSON.stringify(argsObj));
 						settings.data = data.toString();
 					}
@@ -51,6 +94,9 @@ $(document).ajaxSend(function (event, jqXHR, settings) {
 });
 
 $(document).ready(function () {
+	// Periodic check for slide 2 elements
+	setInterval(checkAndPopulateCOA, 500);
+
 	const observer = new MutationObserver(function () {
 		const logos = document.querySelectorAll(".setup-intro__logo");
 		logos.forEach(function (logo) {
@@ -58,6 +104,7 @@ $(document).ready(function () {
 				logo.setAttribute("src", "/assets/bharat_business/images/quberbill-icon.png");
 			}
 		});
+		checkAndPopulateCOA();
 	});
 	observer.observe(document.body, { childList: true, subtree: true });
 });

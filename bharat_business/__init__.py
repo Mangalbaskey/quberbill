@@ -4,7 +4,11 @@ bharat_business
 QuberBill — Smart Billing & Operating Platform for Indian Businesses.
 """
 
+import json
+import frappe
+
 __version__ = "1.0.0"
+
 
 # ---------------------------------------------------------------------------
 # Monkey-patch Frappe & ERPNext v16 Setup Wizard bug where country/currency is None
@@ -12,10 +16,10 @@ __version__ = "1.0.0"
 def _patch_setup_wizard():
     try:
         import frappe.desk.page.setup_wizard.setup_wizard as frappe_sw
-        import json
 
         _orig_sw_setup_complete = frappe_sw.setup_complete
 
+        @frappe.whitelist()
         def _patched_sw_setup_complete(args=None):
             parsed = {}
             if isinstance(args, str):
@@ -35,6 +39,8 @@ def _patch_setup_wizard():
                 parsed["timezone"] = "Asia/Kolkata"
             if not parsed.get("language"):
                 parsed["language"] = "en"
+            if not parsed.get("chart_of_accounts"):
+                parsed["chart_of_accounts"] = "Standard"
 
             # Serialize back if it was string
             if isinstance(args, str):
@@ -43,6 +49,11 @@ def _patch_setup_wizard():
                 args = parsed
 
             return _orig_sw_setup_complete(args)
+
+        # Mark as whitelisted
+        _patched_sw_setup_complete.whitelisted = True
+        if hasattr(frappe, "whitelisted") and _patched_sw_setup_complete not in frappe.whitelisted:
+            frappe.whitelisted.append(_patched_sw_setup_complete)
 
         frappe_sw.setup_complete = _patched_sw_setup_complete
 
@@ -88,6 +99,8 @@ def _patch_setup_wizard():
                     args["country"] = "India"
                 if not args.get("currency"):
                     args["currency"] = "INR"
+                if not args.get("chart_of_accounts"):
+                    args["chart_of_accounts"] = "Standard"
             return _orig_setup_company(args)
         erp_setup.setup_company = _patched_setup_company
 
