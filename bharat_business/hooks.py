@@ -97,6 +97,9 @@ doc_events = {
     "Item": {
         "after_insert": "bharat_business.overrides.item.after_insert",
     },
+    "User": {
+        "after_insert": "bharat_business.setup.install.after_user_signup",
+    },
 }
 
 # ---------------------------------------------------------------------------

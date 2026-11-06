@@ -88,6 +88,7 @@ services:
         if [ -d "sites/$$SITE" ]; then
           echo "Site $$SITE already exists, running migrations";
           bench --site $$SITE migrate;
+          bench --site $$SITE execute frappe.db.set_single_value --args "['Website Settings', 'disable_signup', 0]";
         else
           echo "Creating site $$SITE";
           INSTALL_ARGS="--install-app erpnext";
@@ -104,6 +105,7 @@ services:
             --db-root-password=$${MARIADB_ROOT_PASSWORD:-admin} \
             $$INSTALL_ARGS \
             --set-default $$SITE;
+          bench --site $$SITE execute frappe.db.set_single_value --args "['Website Settings', 'disable_signup', 0]";
         fi;
     environment:
       SITE_NAME: ${SITE_NAME:-frontend}

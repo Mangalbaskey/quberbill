@@ -49,7 +49,10 @@ def _setup_branding():
             ws.splash_image = "/assets/bharat_business/images/quberbill-logo.png"
             ws.banner_image = "/assets/bharat_business/images/quberbill-logo.png"
             ws.brand_html = '<img src="/assets/bharat_business/images/quberbill-logo.png" style="max-height: 32px;" alt="QuberBill">'
+            ws.disable_signup = 0  # Enable public user registration on /login
+            ws.hide_footer_signup = 0
             ws.save(ignore_permissions=True)
+            frappe.db.commit()
 
         # Navbar Settings
         if frappe.db.exists("DocType", "Navbar Settings"):
@@ -115,3 +118,21 @@ def _create_default_workspaces():
     once the DocType fixtures and page assets are ready.
     """
     pass
+
+
+def after_user_signup(doc, method=None):
+    """Automatically grant desk access and roles to newly registered QuberBill users."""
+    if not doc or doc.name in ("Administrator", "Guest"):
+        return
+    try:
+        # Give System User access so they can log into Desk / POS
+        if doc.user_type != "System User":
+            frappe.db.set_value("User", doc.name, "user_type", "System User")
+
+        # Grant business owner & billing roles
+        for r in ["Bharat Business Owner", "Stock User", "Sales User", "Accounts User"]:
+            if frappe.db.exists("Role", r):
+                doc.add_roles(r)
+        frappe.db.commit()
+    except Exception:
+        frappe.log_error(frappe.get_traceback(), "[bharat_business] after_user_signup error")
