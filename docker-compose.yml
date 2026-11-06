@@ -96,6 +96,8 @@ services:
         cp apps/bharat_business/bharat_business/public/images/quberbill-icon.svg sites/assets/frappe/images/frappe-framework-logo.svg 2>/dev/null || true;
         cp apps/bharat_business/bharat_business/public/images/quberbill-icon.png sites/assets/erpnext/images/erpnext-icon.png 2>/dev/null || true;
         cp apps/bharat_business/bharat_business/public/images/quberbill-icon.png sites/assets/frappe/images/frappe-icon.png 2>/dev/null || true;
+        sed -i "s/country\.replace/(country or 'India')\.replace/g" apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py 2>/dev/null || true;
+        sed -i "s/fixtures\.install(args\.get(\"country\"))/fixtures.install(args.get(\"country\") or \"India\")/g" apps/erpnext/erpnext/setup/setup_wizard/setup_wizard.py 2>/dev/null || true;
         if [ -d "sites/$$SITE" ]; then
           echo "Site $$SITE already exists, running migrations";
           bench --site $$SITE set-maintenance-mode off 2>/dev/null || true;

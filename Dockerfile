@@ -39,3 +39,7 @@ RUN cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/ima
         cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.svg /home/frappe/frappe-bench/assets/frappe/images/frappe-framework-logo.svg 2>/dev/null || true; \
         cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.png /home/frappe/frappe-bench/assets/frappe/images/frappe-icon.png 2>/dev/null || true; \
     fi
+
+# Patch ERPNext setup wizard NoneType country bug
+RUN sed -i "s/country\.replace/(country or 'India')\.replace/g" /home/frappe/frappe-bench/apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py 2>/dev/null || true \
+    && sed -i "s/fixtures\.install(args\.get(\"country\"))/fixtures.install(args.get(\"country\") or \"India\")/g" /home/frappe/frappe-bench/apps/erpnext/erpnext/setup/setup_wizard/setup_wizard.py 2>/dev/null || true

@@ -16,6 +16,26 @@ frappe.setup.on("before_load", function () {
 	}, 50);
 });
 
+// Intercept setup_complete call to ensure country, currency, and timezone are always set
+$(document).ajaxSend(function (event, jqXHR, settings) {
+	if (settings.url && settings.url.includes("setup_complete")) {
+		try {
+			let data = new URLSearchParams(settings.data);
+			let argsStr = data.get("args");
+			if (argsStr) {
+				let argsObj = JSON.parse(argsStr);
+				if (!argsObj.country) argsObj.country = "India";
+				if (!argsObj.currency) argsObj.currency = "INR";
+				if (!argsObj.timezone) argsObj.timezone = "Asia/Kolkata";
+				data.set("args", JSON.stringify(argsObj));
+				settings.data = data.toString();
+			}
+		} catch (e) {
+			console.error("QuberBill setup_wizard parameter injection notice:", e);
+		}
+	}
+});
+
 $(document).ready(function () {
 	const observer = new MutationObserver(function () {
 		const logos = document.querySelectorAll(".setup-intro__logo");
