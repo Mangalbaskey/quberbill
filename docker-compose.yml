@@ -89,12 +89,19 @@ services:
         echo "$$SITE" > sites/currentsite.txt;
         cd sites && ln -sfn "$$SITE" quberbill.mooo.com 2>/dev/null || true;
         cd ..;
+        mkdir -p sites/assets/erpnext/images sites/assets/frappe/images 2>/dev/null || true;
+        cp apps/bharat_business/bharat_business/public/images/quberbill-icon.svg sites/assets/erpnext/images/erpnext-logo.svg 2>/dev/null || true;
+        cp apps/bharat_business/bharat_business/public/images/quberbill-icon.svg sites/assets/erpnext/images/erp-icon.svg 2>/dev/null || true;
+        cp apps/bharat_business/bharat_business/public/images/quberbill-icon.svg sites/assets/frappe/images/frappe-framework-logo.svg 2>/dev/null || true;
+        cp apps/bharat_business/bharat_business/public/images/quberbill-icon.png sites/assets/erpnext/images/erpnext-icon.png 2>/dev/null || true;
+        cp apps/bharat_business/bharat_business/public/images/quberbill-icon.png sites/assets/frappe/images/frappe-icon.png 2>/dev/null || true;
         if [ -d "sites/$$SITE" ]; then
           echo "Site $$SITE already exists, running migrations";
           bench --site $$SITE set-maintenance-mode off 2>/dev/null || true;
           bench --site $$SITE uninstall-app india_compliance --yes 2>/dev/null || true;
           bench --site $$SITE migrate --skip-failing 2>/dev/null || bench --site $$SITE migrate 2>/dev/null || true;
           bench --site $$SITE set-maintenance-mode off 2>/dev/null || true;
+          bench --site $$SITE execute bharat_business.setup.install._setup_branding 2>/dev/null || true;
           bench --site $$SITE execute frappe.db.set_single_value --args "['Website Settings', 'disable_signup', 0]" 2>/dev/null || true;
         else
           echo "Creating site $$SITE";
@@ -109,6 +116,7 @@ services:
             --db-root-password=$${MARIADB_ROOT_PASSWORD:-admin} \
             $$INSTALL_ARGS \
             --set-default $$SITE;
+          bench --site $$SITE execute bharat_business.setup.install._setup_branding 2>/dev/null || true;
           bench --site $$SITE execute frappe.db.set_single_value --args "['Website Settings', 'disable_signup', 0]";
         fi;
         cd sites && ln -sfn "$$SITE" quberbill.mooo.com 2>/dev/null || true;

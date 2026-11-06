@@ -23,3 +23,19 @@ RUN if [ -d "/home/frappe/frappe-bench/apps/bharat_business/bharat_business/publ
         mkdir -p /home/frappe/frappe-bench/assets/bharat_business && \
         cp -r /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/* /home/frappe/frappe-bench/assets/bharat_business/ 2>/dev/null || true; \
     fi
+
+# Replace ERPNext and Frappe logos with QuberBill branding in app layers and assets
+RUN cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.svg /home/frappe/frappe-bench/apps/erpnext/erpnext/public/images/erpnext-logo.svg 2>/dev/null || true \
+    && cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.svg /home/frappe/frappe-bench/apps/erpnext/erpnext/public/images/erp-icon.svg 2>/dev/null || true \
+    && cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.svg /home/frappe/frappe-bench/apps/frappe/frappe/public/images/frappe-framework-logo.svg 2>/dev/null || true \
+    && cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.png /home/frappe/frappe-bench/apps/erpnext/erpnext/public/images/erpnext-icon.png 2>/dev/null || true \
+    && cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.png /home/frappe/frappe-bench/apps/frappe/frappe/public/images/frappe-icon.png 2>/dev/null || true \
+    && if [ -d "/home/frappe/frappe-bench/assets/erpnext/images" ]; then \
+        cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.svg /home/frappe/frappe-bench/assets/erpnext/images/erpnext-logo.svg 2>/dev/null || true; \
+        cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.svg /home/frappe/frappe-bench/assets/erpnext/images/erp-icon.svg 2>/dev/null || true; \
+        cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.png /home/frappe/frappe-bench/assets/erpnext/images/erpnext-icon.png 2>/dev/null || true; \
+    fi \
+    && if [ -d "/home/frappe/frappe-bench/assets/frappe/images" ]; then \
+        cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.svg /home/frappe/frappe-bench/assets/frappe/images/frappe-framework-logo.svg 2>/dev/null || true; \
+        cp /home/frappe/frappe-bench/apps/bharat_business/bharat_business/public/images/quberbill-icon.png /home/frappe/frappe-bench/assets/frappe/images/frappe-icon.png 2>/dev/null || true; \
+    fi
