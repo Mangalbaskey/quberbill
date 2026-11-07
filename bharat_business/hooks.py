@@ -136,11 +136,17 @@ jinja = {
 # Use Permission Manager or DocType fixtures to adjust standard permissions.
 
 # ---------------------------------------------------------------------------
+# Authentication & Routing Hooks
+# ---------------------------------------------------------------------------
+on_login = "bharat_business.setup.auth_routing.on_login"
+
+# ---------------------------------------------------------------------------
 # Website / Portal / Landing Page
 # ---------------------------------------------------------------------------
 home_page = "index"
 website_route_rules = [
     {"from_route": "/", "to_route": "index"},
+    {"from_route": "/platform-admin", "to_route": "platform_admin"},
 ]
 
 # ---------------------------------------------------------------------------

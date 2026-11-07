@@ -94,19 +94,19 @@ ROLES = [
     {
         "role_name": "Bharat Business Owner",
         "desk_access": 1,
-        "home_page": "",
+        "home_page": "/app/bb-pos",
         "restrict_to_domain": "",
     },
     {
         "role_name": "Bharat Business Manager",
         "desk_access": 1,
-        "home_page": "",
+        "home_page": "/app/bb-pos",
         "restrict_to_domain": "",
     },
     {
         "role_name": "Bharat Business Cashier",
         "desk_access": 1,
-        "home_page": "",
+        "home_page": "/app/bb-pos",
         "restrict_to_domain": "",
     },
     {
@@ -119,12 +119,14 @@ ROLES = [
 
 
 def _create_roles():
-    """Create bharat_business roles if they don't already exist."""
+    """Create or update bharat_business roles with designated client home page."""
     for role_data in ROLES:
         if not frappe.db.exists("Role", role_data["role_name"]):
             role = frappe.get_doc({"doctype": "Role", **role_data})
             role.insert(ignore_permissions=True)
             frappe.logger().info(f"[bharat_business] Created role: {role_data['role_name']}")
+        else:
+            frappe.db.set_value("Role", role_data["role_name"], "home_page", role_data["home_page"])
 
 
 def _create_default_workspaces():

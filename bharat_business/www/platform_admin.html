@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <link rel="icon" type="image/png" href="{{ favicon }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #101726;
+      --surface-hover: #162033;
+      --card: #131c2e;
+      --border: #232f48;
+      --border-focus: #ea580c;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #ea580c;
+      --primary-hover: #c2410c;
+      --green: #10b981;
+      --green-bg: rgba(16, 185, 129, 0.12);
+      --red: #ef4444;
+      --red-bg: rgba(239, 68, 68, 0.12);
+      --blue: #3b82f6;
+      --blue-bg: rgba(59, 130, 246, 0.12);
+      --purple: #8b5cf6;
+      --purple-bg: rgba(139, 92, 246, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .brand-logo {
+      height: 28px;
+      display: block;
+    }
+    .brand-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(234, 88, 12, 0.15);
+      color: #fb923c;
+      border: 1px solid rgba(234, 88, 12, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .brand-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fb923c;
+      box-shadow: 0 0 8px #fb923c;
+    }
+    .header-links {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nav-btn {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.45rem 0.85rem;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .nav-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .nav-btn.primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .nav-btn.primary:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.75rem 4rem;
+    }
+
+    .page-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .page-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .page-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .stat-card.c-orange::before { background: var(--primary); }
+    .stat-card.c-green::before { background: var(--green); }
+    .stat-card.c-blue::before { background: var(--blue); }
+    .stat-card.c-purple::before { background: var(--purple); }
+
+    .stat-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      margin-bottom: 0.4rem;
+    }
+    .stat-value {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .stat-desc {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 0.35rem;
+    }
+
+    /* Tab Navigation */
+    .tab-bar {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.75rem 1.25rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+    }
+    .tab-btn.active {
+      color: #fb923c;
+      border-bottom-color: #fb923c;
+    }
+    .tab-badge {
+      font-size: 0.75rem;
+      background: var(--surface-hover);
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+    .tab-btn.active .tab-badge {
+      background: rgba(234, 88, 12, 0.2);
+      border-color: rgba(234, 88, 12, 0.4);
+      color: #fb923c;
+    }
+
+    /* Control Bar */
+    .control-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+      padding: 1rem 1.25rem;
+    }
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+    }
+    .search-box {
+      position: relative;
+      min-width: 280px;
+      flex: 1;
+      max-width: 420px;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.55rem 0.85rem 0.55rem 2.2rem;
+      color: var(--text);
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .search-input:focus {
+      border-color: var(--border-focus);
+    }
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 15px;
+      height: 15px;
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+    .select-input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.55rem 1rem;
+      color: var(--text);
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+    .select-input:focus {
+      border-color: var(--border-focus);
+    }
+    .btn {
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.55rem 1.1rem;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .btn-secondary {
+      background: var(--surface-hover);
+      border-color: var(--border);
+      color: var(--text);
+    }
+    .btn-secondary:hover {
+      background: #1c273d;
+    }
+
+    /* Table */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0 0 10px 10px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    th {
+      background: rgba(16, 23, 38, 0.8);
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 0.95rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:hover td {
+      background: rgba(22, 32, 51, 0.5);
+    }
+
+    .pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .pill-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.25); }
+    .pill-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.25); }
+    .pill-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(59, 130, 246, 0.25); }
+    .pill-orange { background: rgba(234, 88, 12, 0.15); color: #fb923c; border: 1px solid rgba(234, 88, 12, 0.3); }
+
+    .action-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.7rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .action-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+      border-color: var(--text-dim);
+    }
+
+    /* Modal Backdrop */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      padding: 1rem;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .modal-head {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-title { font-size: 1.15rem; font-weight: 700; }
+    .modal-close {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 1.25rem;
+    }
+    .modal-body { padding: 1.5rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: var(--text-dim); text-transform: uppercase;
+      letter-spacing: 0.04em; margin-bottom: 0.4rem;
+    }
+    .form-control {
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.65rem 0.9rem; color: var(--text);
+      font-size: 0.9rem; outline: none;
+    }
+    .form-control:focus { border-color: var(--border-focus); }
+    .modal-foot {
+      padding: 1rem 1.5rem; border-top: 1px solid var(--border);
+      display: flex; justify-content: flex-end; gap: 0.75rem;
+      background: rgba(10, 15, 26, 0.4); border-radius: 0 0 12px 12px;
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.75rem 1.25rem;
+      color: var(--text); font-size: 0.88rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 100;
+      display: none; align-items: center; gap: 0.6rem;
+    }
+    #toast.show { display: flex; }
+    #toast.success { border-color: var(--green); color: var(--green); }
+    #toast.error { border-color: var(--red); color: var(--red); }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header>
+    <div class="brand-wrap">
+      <a href="/"><img src="{{ app_logo }}" alt="QuberBill Logo" class="brand-logo"></a>
+      <span class="brand-badge">Platform Super Admin</span>
+    </div>
+    <div class="header-links">
+      <a href="/app" class="nav-btn" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Frappe Desk
+      </a>
+      <a href="/?cmd=web_logout" class="nav-btn">Log Out</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">SaaS Administration & Control Plane</h1>
+        <p class="page-subtitle">Platform overview of onboarded businesses, merchant accounts, and tenant isolation.</p>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="openAddTenantModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Create Business Account
+        </button>
+      </div>
+    </div>
+
+    <!-- Top Stats -->
+    <div class="stats-grid">
+      <div class="stat-card c-orange">
+        <div class="stat-label">Total Businesses</div>
+        <div class="stat-value" id="stat-total-businesses">-</div>
+        <div class="stat-desc">Registered merchant companies</div>
+      </div>
+      <div class="stat-card c-green">
+        <div class="stat-label">Active Stores</div>
+        <div class="stat-value" id="stat-active-businesses" style="color: var(--green);">-</div>
+        <div class="stat-desc">Generating bills & POS active</div>
+      </div>
+      <div class="stat-card c-blue">
+        <div class="stat-label">Total Accounts</div>
+        <div class="stat-value" id="stat-total-accounts">-</div>
+        <div class="stat-desc">Client users on platform</div>
+      </div>
+      <div class="stat-card c-purple">
+        <div class="stat-label">Tenant Isolation</div>
+        <div class="stat-value" style="font-size: 1.2rem; color: #a78bfa; padding-top: 0.4rem;">ENFORCED</div>
+        <div class="stat-desc">User Permission per Company</div>
+      </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tabBtnBusinesses" onclick="switchTab('businesses')">
+        🏢 Registered Businesses
+        <span class="tab-badge" id="badge-businesses">0</span>
+      </button>
+      <button class="tab-btn" id="tabBtnAccounts" onclick="switchTab('accounts')">
+        👥 Platform Accounts
+        <span class="tab-badge" id="badge-accounts">0</span>
+      </button>
+    </div>
+
+    <!-- Tab 1: Businesses -->
+    <div id="sectionBusinesses">
+      <div class="control-bar">
+        <div class="filter-group">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchBizInput" class="search-input" placeholder="Search business, company, or GSTIN..." oninput="filterBusinesses()">
+          </div>
+          <select id="bizTypeFilter" class="select-input" onchange="filterBusinesses()">
+            <option value="all">All Business Types</option>
+            <option value="Retail">Retail</option>
+            <option value="Grocery">Grocery</option>
+            <option value="Wholesale">Wholesale</option>
+            <option value="Restaurant">Restaurant</option>
+            <option value="Services">Services</option>
+            <option value="Manufacturing">Manufacturing</option>
+          </select>
+          <select id="bizStatusFilter" class="select-input" onchange="filterBusinesses()">
+            <option value="all">All Statuses</option>
+            <option value="active">Active Only</option>
+            <option value="paused">Paused Only</option>
+          </select>
+        </div>
+        <button class="btn btn-secondary" onclick="loadBusinesses()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Refresh
+        </button>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Business / Profile</th>
+              <th>Type</th>
+              <th>GSTIN & State</th>
+              <th>Owner Account</th>
+              <th>Onboarding</th>
+              <th>Status</th>
+              <th>Registered On</th>
+              <th style="text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="businessesTableBody">
+            <tr>
+              <td colspan="8" style="text-align: center; color: var(--text-dim); padding: 3rem;">Loading businesses...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 2: Platform Accounts -->
+    <div id="sectionAccounts" style="display: none;">
+      <div class="control-bar">
+        <div class="filter-group">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchAccInput" class="search-input" placeholder="Search account email or name..." oninput="filterAccounts()">
+          </div>
+          <select id="accStatusFilter" class="select-input" onchange="filterAccounts()">
+            <option value="all">All Account Statuses</option>
+            <option value="active">Active Only</option>
+            <option value="disabled">Disabled Only</option>
+          </select>
+        </div>
+        <button class="btn btn-secondary" onclick="loadAccounts()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Refresh
+        </button>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>User Account</th>
+              <th>Associated Business</th>
+              <th>Roles</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Last Login</th>
+              <th style="text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="accountsTableBody">
+            <tr>
+              <td colspan="7" style="text-align: center; color: var(--text-dim); padding: 3rem;">Loading accounts...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal: Create Account -->
+  <div class="modal-backdrop" id="addTenantModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 class="modal-title">Create Client Business Account</h3>
+        <button class="modal-close" onclick="closeModal('addTenantModal')">&times;</button>
+      </div>
+      <form onsubmit="handleCreateTenant(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" id="newTenantEmail" class="form-control" placeholder="client@store.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Full Name / Contact Name *</label>
+            <input type="text" id="newTenantName" class="form-control" placeholder="Ramesh Kumar" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Initial Password *</label>
+            <input type="password" id="newTenantPassword" class="form-control" placeholder="Set temporary password" required minlength="6">
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('addTenantModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitTenant">Create Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Reset Password -->
+  <div class="modal-backdrop" id="resetPwdModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 class="modal-title">Reset Account Password</h3>
+        <button class="modal-close" onclick="closeModal('resetPwdModal')">&times;</button>
+      </div>
+      <form onsubmit="handleResetPassword(event)">
+        <input type="hidden" id="resetUserEmail">
+        <div class="modal-body">
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Setting a new password for <strong id="resetUserLabel" style="color: var(--text);"></strong>.
+          </p>
+          <div class="form-group">
+            <label class="form-label">New Password *</label>
+            <input type="password" id="resetNewPassword" class="form-control" placeholder="Enter new secure password" required minlength="6">
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('resetPwdModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const CSRF_TOKEN = "{{ csrf_token }}";
+    let allBusinesses = [];
+    let allAccounts = [];
+
+    // --- Toast Notification ---
+    function showToast(msg, isSuccess = true) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'show ' + (isSuccess ? 'success' : 'error');
+      setTimeout(() => { t.className = ''; }, 3500);
+    }
+
+    // --- Modal Management ---
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+    function openAddTenantModal() {
+      document.getElementById('newTenantEmail').value = '';
+      document.getElementById('newTenantName').value = '';
+      document.getElementById('newTenantPassword').value = '';
+      openModal('addTenantModal');
+    }
+
+    function openResetPasswordModal(email) {
+      document.getElementById('resetUserEmail').value = email;
+      document.getElementById('resetUserLabel').textContent = email;
+      document.getElementById('resetNewPassword').value = '';
+      openModal('resetPwdModal');
+    }
+
+    // --- Tab Switcher ---
+    function switchTab(tab) {
+      const btnBiz = document.getElementById('tabBtnBusinesses');
+      const btnAcc = document.getElementById('tabBtnAccounts');
+      const secBiz = document.getElementById('sectionBusinesses');
+      const secAcc = document.getElementById('sectionAccounts');
+
+      if (tab === 'businesses') {
+        btnBiz.classList.add('active');
+        btnAcc.classList.remove('active');
+        secBiz.style.display = 'block';
+        secAcc.style.display = 'none';
+      } else {
+        btnAcc.classList.add('active');
+        btnBiz.classList.remove('active');
+        secAcc.style.display = 'block';
+        secBiz.style.display = 'none';
+      }
+    }
+
+    // --- API Calls ---
+    async function apiCall(method, data = {}) {
+      const resp = await fetch(`/api/method/bharat_business.www.platform_admin.${method}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Frappe-CSRF-Token': CSRF_TOKEN
+        },
+        body: JSON.stringify(data)
+      });
+      const res = await resp.json();
+      if (resp.status >= 400 || res.exc || res._server_messages) {
+        let err = 'Request failed';
+        if (res._server_messages) {
+          try {
+            const msgs = JSON.parse(res._server_messages);
+            err = JSON.parse(msgs[0]).message;
+          } catch(e) {}
+        }
+        throw new Error(err);
+      }
+      return res.message;
+    }
+
+    // --- Overview & Metrics ---
+    async function loadMetrics() {
+      try {
+        const data = await apiCall('get_platform_overview');
+        if (data && data.metrics) {
+          document.getElementById('stat-total-businesses').textContent = data.metrics.total_businesses;
+          document.getElementById('stat-active-businesses').textContent = data.metrics.active_businesses;
+          document.getElementById('stat-total-accounts').textContent = data.metrics.total_users;
+        }
+      } catch(err) {
+        console.error('Failed to load metrics', err);
+      }
+    }
+
+    // --- Businesses Tab ---
+    async function loadBusinesses() {
+      const tbody = document.getElementById('businessesTableBody');
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-dim); padding: 3rem;">Loading businesses...</td></tr>';
+      try {
+        const res = await apiCall('get_businesses');
+        allBusinesses = res.businesses || [];
+        document.getElementById('badge-businesses').textContent = allBusinesses.length;
+        renderBusinesses(allBusinesses);
+      } catch(err) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--red); padding: 2rem;">Error: ${err.message}</td></tr>`;
+      }
+    }
+
+    function renderBusinesses(list) {
+      const tbody = document.getElementById('businessesTableBody');
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-dim); padding: 3rem;">No registered businesses found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = list.map(b => `
+        <tr>
+          <td>
+            <div style="font-weight: 600; color: var(--text);">${escapeHtml(b.profile_name)}</div>
+            <div style="font-size: 0.78rem; color: var(--text-dim);">Company: ${escapeHtml(b.company)}</div>
+          </td>
+          <td><span class="pill pill-blue">${escapeHtml(b.business_type)}</span></td>
+          <td>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;">${escapeHtml(b.gstin)}</div>
+            <div style="font-size: 0.75rem; color: var(--text-dim);">${escapeHtml(b.state)}</div>
+          </td>
+          <td>
+            <div style="font-weight: 500;">${escapeHtml(b.owner_name)}</div>
+            <div style="font-size: 0.78rem; color: var(--text-dim);">${escapeHtml(b.owner_email)}</div>
+          </td>
+          <td>
+            ${b.onboarding_complete 
+              ? '<span class="pill pill-green">Complete</span>' 
+              : '<span class="pill pill-orange">In Progress</span>'}
+          </td>
+          <td>
+            ${b.is_active 
+              ? '<span class="pill pill-green">Active</span>' 
+              : '<span class="pill pill-red">Paused</span>'}
+          </td>
+          <td style="font-size: 0.8rem; color: var(--text-dim);">${b.creation}</td>
+          <td style="text-align: right;">
+            <button class="action-btn" onclick="toggleBusiness('${escapeHtml(b.name)}', ${b.is_active ? 0 : 1})">
+              ${b.is_active ? 'Pause' : 'Activate'}
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function filterBusinesses() {
+      const q = document.getElementById('searchBizInput').value.toLowerCase().trim();
+      const type = document.getElementById('bizTypeFilter').value;
+      const status = document.getElementById('bizStatusFilter').value;
+
+      const filtered = allBusinesses.filter(b => {
+        const matchesQ = !q || b.profile_name.toLowerCase().includes(q) || b.company.toLowerCase().includes(q) || b.gstin.toLowerCase().includes(q) || b.owner_email.toLowerCase().includes(q);
+        const matchesType = type === 'all' || b.business_type.toLowerCase() === type.toLowerCase();
+        const matchesStatus = status === 'all' || (status === 'active' && b.is_active) || (status === 'paused' && !b.is_active);
+        return matchesQ && matchesType && matchesStatus;
+      });
+      renderBusinesses(filtered);
+    }
+
+    async function toggleBusiness(name, newState) {
+      try {
+        const res = await apiCall('toggle_business_status', { business_name: name, is_active: newState });
+        showToast(res.message, true);
+        await loadBusinesses();
+        await loadMetrics();
+      } catch(e) {
+        showToast(e.message, false);
+      }
+    }
+
+    // --- Accounts Tab ---
+    async function loadAccounts() {
+      const tbody = document.getElementById('accountsTableBody');
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-dim); padding: 3rem;">Loading accounts...</td></tr>';
+      try {
+        const res = await apiCall('get_accounts');
+        allAccounts = res.accounts || [];
+        document.getElementById('badge-accounts').textContent = allAccounts.length;
+        renderAccounts(allAccounts);
+      } catch(err) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--red); padding: 2rem;">Error: ${err.message}</td></tr>`;
+      }
+    }
+
+    function renderAccounts(list) {
+      const tbody = document.getElementById('accountsTableBody');
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-dim); padding: 3rem;">No accounts found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = list.map(u => `
+        <tr>
+          <td>
+            <div style="font-weight: 600; color: var(--text);">${escapeHtml(u.full_name)}</div>
+            <div style="font-size: 0.78rem; color: var(--text-dim);">${escapeHtml(u.email)}</div>
+          </td>
+          <td>
+            <div style="font-weight: 500; font-size: 0.85rem;">${escapeHtml(u.company)}</div>
+          </td>
+          <td>
+            ${u.roles.map(r => `<span class="pill ${r.includes('Owner') ? 'pill-orange' : 'pill-blue'}" style="margin: 0.1rem;">${escapeHtml(r)}</span>`).join('')}
+          </td>
+          <td>
+            ${u.enabled 
+              ? '<span class="pill pill-green">Active</span>' 
+              : '<span class="pill pill-red">Disabled</span>'}
+          </td>
+          <td style="font-size: 0.8rem; color: var(--text-dim);">${u.creation}</td>
+          <td style="font-size: 0.8rem; color: var(--text-dim);">${u.last_login}</td>
+          <td style="text-align: right; white-space: nowrap;">
+            ${u.name !== 'Administrator' ? `
+              <button class="action-btn" onclick="openResetPasswordModal('${escapeHtml(u.name)}')">Password</button>
+              <button class="action-btn" onclick="toggleAccount('${escapeHtml(u.name)}', ${u.enabled ? 0 : 1})">
+                ${u.enabled ? 'Disable' : 'Enable'}
+              </button>
+            ` : '<span style="font-size: 0.75rem; color: var(--text-dim);">Super Admin</span>'}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function filterAccounts() {
+      const q = document.getElementById('searchAccInput').value.toLowerCase().trim();
+      const status = document.getElementById('accStatusFilter').value;
+
+      const filtered = allAccounts.filter(u => {
+        const matchesQ = !q || u.email.toLowerCase().includes(q) || u.full_name.toLowerCase().includes(q) || u.company.toLowerCase().includes(q);
+        const matchesStatus = status === 'all' || (status === 'active' && u.enabled) || (status === 'disabled' && !u.enabled);
+        return matchesQ && matchesStatus;
+      });
+      renderAccounts(filtered);
+    }
+
+    async function toggleAccount(user, newState) {
+      try {
+        const res = await apiCall('toggle_account_status', { user, enabled: newState });
+        showToast(res.message, true);
+        await loadAccounts();
+        await loadMetrics();
+      } catch(e) {
+        showToast(e.message, false);
+      }
+    }
+
+    // --- Form Handlers ---
+    async function handleCreateTenant(e) {
+      e.preventDefault();
+      const email = document.getElementById('newTenantEmail').value;
+      const first_name = document.getElementById('newTenantName').value;
+      const password = document.getElementById('newTenantPassword').value;
+      const btn = document.getElementById('btnSubmitTenant');
+      btn.disabled = true;
+      btn.textContent = 'Creating...';
+
+      try {
+        const res = await apiCall('create_tenant_user', { email, first_name, password });
+        showToast(res.message, true);
+        closeModal('addTenantModal');
+        await loadAccounts();
+        await loadMetrics();
+      } catch(err) {
+        showToast(err.message, false);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
+      }
+    }
+
+    async function handleResetPassword(e) {
+      e.preventDefault();
+      const user = document.getElementById('resetUserEmail').value;
+      const new_password = document.getElementById('resetNewPassword').value;
+
+      try {
+        const res = await apiCall('reset_account_password', { user, new_password });
+        showToast(res.message, true);
+        closeModal('resetPwdModal');
+      } catch(err) {
+        showToast(err.message, false);
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // --- Init ---
+    document.addEventListener('DOMContentLoaded', () => {
+      loadMetrics();
+      loadBusinesses();
+      loadAccounts();
+    });
+  </script>
+</body>
+</html>

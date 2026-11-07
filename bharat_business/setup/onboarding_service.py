@@ -217,16 +217,36 @@ class OnboardingService:
 
     def _assign_owner_role(self) -> bool:
         """
-        Assign 'Bharat Business Owner' role to the user who started the wizard.
+        Assign 'Bharat Business Owner' role and strict Company User Permission
+        to the user who registered, ensuring complete tenant isolation.
         """
         user = frappe.session.user
         if user == "Administrator":
             return True
+
         user_doc = frappe.get_doc("User", user)
         existing_roles = [r.role for r in user_doc.roles]
         if "Bharat Business Owner" not in existing_roles:
             user_doc.append("roles", {"role": "Bharat Business Owner"})
             user_doc.save(ignore_permissions=True)
+
+        # Multi-tenancy: restrict this user strictly to their own business/company
+        step2 = self._step_data.get("step_2", {})
+        company_name = step2.get("business_name", "").strip()
+        if company_name and not frappe.db.exists(
+            "User Permission",
+            {"user": user, "allow": "Company", "for_value": company_name}
+        ):
+            perm = frappe.get_doc({
+                "doctype": "User Permission",
+                "user": user,
+                "allow": "Company",
+                "for_value": company_name,
+                "is_default": 1,
+            })
+            perm.insert(ignore_permissions=True)
+            frappe.defaults.set_user_default("company", company_name, user)
+
         return True
 
     # ------------------------------------------------------------------
